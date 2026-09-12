@@ -8,7 +8,7 @@ const url = process.env.SUPABASE_URL;
 const key = process.env.SUPABASE_ANON_KEY;
 
 app.use(express.json());
-app.use(express.static('public'));
+app.use(express.static('.'));
 
 function clientFor(req) {
   if (!url || !key) throw new Error('Supabase is not configured. Add SUPABASE_URL and SUPABASE_ANON_KEY.');
