@@ -1,14 +1,16 @@
 import 'dotenv/config';
 import express from 'express';
+import { existsSync } from 'node:fs';
 import { createClient } from '@supabase/supabase-js';
 
 const app = express();
 const port = process.env.PORT || 3000;
+const host = process.env.HOST || '0.0.0.0';
 const url = process.env.SUPABASE_URL;
 const key = process.env.SUPABASE_ANON_KEY;
 
 app.use(express.json());
-app.use(express.static('.'));
+app.use(express.static(existsSync('public') ? 'public' : '.'));
 
 function clientFor(req) {
   if (!url || !key) throw new Error('Supabase is not configured. Add SUPABASE_URL and SUPABASE_ANON_KEY.');
@@ -31,7 +33,7 @@ app.get('/api/dashboard', async (req, res) => {
     const { supabase, user } = auth;
     const [profile, mail, listings, chat] = await Promise.all([
       supabase.from('profiles').select('display_name,balance').eq('id', user.id).single(),
-      supabase.from('mail').select('*', { count: 'exact' }).eq('recipient_id', user.id).order('created_at', { ascending: false }).limit(12),
+      supabase.from('mail').select('id,subject,body,created_at,sender:profiles!mail_sender_id_fkey(display_name)', { count: 'exact' }).eq('recipient_id', user.id).order('created_at', { ascending: false }).limit(12),
       supabase.from('marketplace_items').select('*').eq('active', true).order('price'),
       supabase.from('chat_messages').select('id,body,created_at,profiles(display_name)').order('created_at', { ascending: false }).limit(30)
     ]);
@@ -80,4 +82,4 @@ app.post('/api/chat', async (req, res) => {
   } catch (error) { res.status(400).json({ error: error.message }); }
 });
 
-app.listen(port, '0.0.0.0', () => console.log(`Crystonia portal listening on ${port}`));
+app.listen(port, host, () => console.log(`Crystonia portal listening on ${port}`));
