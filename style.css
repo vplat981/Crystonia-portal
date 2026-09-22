@@ -38,5 +38,5 @@
 .footer-support:hover{text-decoration:underline}
 [data-cyvapay]:not([href]){cursor:not-allowed;opacity:.6}
 @media(max-width:760px){header{height:auto;flex-wrap:wrap;gap:12px;padding-top:14px;padding-bottom:12px}.brand{order:1}.header-actions{order:2;margin-left:auto}nav#tabs{display:flex;order:3;width:100%;gap:18px;overflow-x:auto;padding-bottom:2px}nav#tabs a{white-space:nowrap;font-size:12px}.citizen-doors{grid-template-columns:1fr;gap:30px}.door-grid{grid-template-columns:1fr}.support-card{grid-template-columns:1fr;gap:26px;padding:32px 24px}.support-card h2{font-size:34px}}
-header{position:sticky;top:0;z-index:4}
-header:before{content:'';position:absolute;inset:0 -100vw;z-index:-1;background:rgba(247,245,238,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.market-section .item{padding:0;align-items:stretch}
+header{position:sticky;top:0;z-index:4;background:rgba(247,245,238,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
